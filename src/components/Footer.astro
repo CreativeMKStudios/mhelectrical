@@ -1,0 +1,51 @@
+---
+import { addressLines, hours, site } from '../data/site';
+import { services } from '../data/services';
+---
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <h2>MH Electrical</h2>
+      <p>
+        {addressLines.map((line) => (
+          <span>{line}<br /></span>
+        ))}
+      </p>
+      <p>
+        <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a><br />
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+      <p><a href={site.mapsUrl}>Open in Google Maps</a></p>
+    </div>
+    <div>
+      <h2>Hours</h2>
+      <table class="hours">
+        <tbody>
+          {hours.map((row) => (
+            <tr>
+              <th scope="row">{row.day}</th>
+              <td>{row.label}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="note">Sunday is listed as 9am–5pm. His flyer also says 24/7 callout.</p>
+    </div>
+    <div>
+      <h2>Services</h2>
+      <ul>
+        {services.map((service) => (
+          <li><a href={`/services/${service.slug}`}>{service.title}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  <p class="fine">
+    Details checked against the Google listing on 6 October 2026. Google rating {site.rating}.0 from {site.reviewCount} reviews.
+    <a href="/privacy">Privacy</a>
+  </p>
+</footer>
+<div class="callbar">
+  <a class="btn" href={`tel:${site.phoneTel}`}>Call</a>
+  <a class="btn ghost" href="/contact">Free quote</a>
+</div>

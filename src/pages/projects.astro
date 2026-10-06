@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../components/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Cta from '../components/Cta.astro';
+import { photos } from '../data/photos';
+import { ownerPost } from '../data/reviews';
+import { breadcrumbSchema } from '../data/schema';
+
+const crumbs = [{ name: 'Projects', href: '/projects' }];
+const title = 'Electrical work photos | MH Electrical';
+const description =
+  'Photos from the MH Electrical Google profile, including the LED fan lights and hallway lights posted on 16 June 2026.';
+const groups = [
+  { id: 'june', title: '16 June 2026 lighting update', intro: ownerPost.text },
+  { id: 'profile', title: 'Other photos on the Google profile', intro: 'These are the other work photos on the listing. They are not tied to a written job note, so the captions only say what is in the picture.' },
+  { id: 'brand', title: 'Logo and flyer', intro: 'Both images are on the Google profile. The flyer has the phone number, the email, and the services he advertises.' },
+] as const;
+---
+<Base title={title} description={description} schema={[breadcrumbSchema(crumbs)]}>
+  <section class="page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">Projects</p>
+      <h1>Work from the Google profile</h1>
+      <p class="lede">These photos are from the MH Electrical Google listing. They show lights, fan lights and fuse boards he has posted.</p>
+    </div>
+  </section>
+  {groups.map((group) => (
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>{group.title}</h2>
+          <p>{group.intro}</p>
+        </div>
+        <div class="photo-grid">
+          {photos.filter((photo) => photo.group === group.id).map((photo) => (
+            <figure class={photo.group === 'brand' ? '' : ''}>
+              <Image src={photo.src} alt={photo.alt} widths={[400, 720, 1100]} sizes="(min-width: 900px) 33vw, 100vw" quality={72} />
+              <figcaption>{photo.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+  <Cta />
+</Base>

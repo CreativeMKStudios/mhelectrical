@@ -1,0 +1,42 @@
+---
+import Base from '../components/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Cta from '../components/Cta.astro';
+import { reviews } from '../data/reviews';
+import { breadcrumbSchema, reviewSchema } from '../data/schema';
+import { site } from '../data/site';
+
+const crumbs = [{ name: 'Reviews', href: '/reviews' }];
+const title = 'Google reviews | MH Electrical';
+const description =
+  'MH Electrical has a 5.0 Google rating from 23 reviews. Read the reviews Google showed in full on 6 October 2026.';
+---
+<Base title={title} description={description} schema={[breadcrumbSchema(crumbs), ...reviewSchema()]}>
+  <section class="page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">Reviews</p>
+      <h1>5.0 from 23 Google reviews</h1>
+      <p class="lede">
+        These are the reviews Google displayed in full on 6 October 2026. Names, stars and wording are as the customers wrote them. The other reviews are on the Google listing.
+      </p>
+      <p><a class="btn" href={site.reviewsUrl}>Read all 23 on Google</a></p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap review-grid">
+      {reviews.map((review) => (
+        <article class="review">
+          <p class="stars" aria-label="5 out of 5 stars">★★★★★</p>
+          <blockquote><p>{review.text}</p></blockquote>
+          <footer>
+            <strong>{review.name}</strong><br />
+            {review.when}
+          </footer>
+          {review.note ? <p class="note">{review.note}</p> : null}
+        </article>
+      ))}
+    </div>
+  </section>
+  <Cta />
+</Base>

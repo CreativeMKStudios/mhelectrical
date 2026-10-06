@@ -1,0 +1,61 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../components/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
+import { photos } from '../../data/photos';
+import { breadcrumbSchema } from '../../data/schema';
+import { services } from '../../data/services';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { slug: service.slug },
+  }));
+}
+
+const { slug } = Astro.props;
+const service = services.find((item) => item.slug === slug);
+if (!service) throw new Error('Missing service');
+const shots = photos.filter((photo) => photo.service === service.slug).slice(0, 3);
+const crumbs = [
+  { name: 'Services', href: '/services' },
+  { name: service.title, href: `/services/${service.slug}` },
+];
+const title = `${service.title} in Bedford | MH Electrical`;
+---
+<Base title={title} description={service.description} schema={[breadcrumbSchema(crumbs)]}>
+  <section class="page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">Services</p>
+      <h1>{service.title}</h1>
+      <p class="lede">{service.lead}</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap split">
+      <div class="prose">
+        {service.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        <h2>What this covers</h2>
+        <ul class="ticks">
+          {service.points.map((point) => <li>{point}</li>)}
+        </ul>
+        <p><a class="btn" href={`/contact?service=${service.slug}`}>Ask for a price</a></p>
+      </div>
+      <div>
+        {shots.map((photo) => (
+          <figure>
+            <Image src={photo.src} alt={photo.alt} widths={[480, 800]} sizes="(min-width: 900px) 42vw, 100vw" />
+            <figcaption class="note">{photo.caption}</figcaption>
+          </figure>
+        ))}
+        {shots.length === 0 ? (
+          <p>Call {site.phoneDisplay} and describe the job. He will say if it is one he does.</p>
+        ) : null}
+      </div>
+    </div>
+  </section>
+  <Cta />
+</Base>

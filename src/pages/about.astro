@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../components/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Cta from '../components/Cta.astro';
+import { photos } from '../data/photos';
+import { breadcrumbSchema } from '../data/schema';
+import { site } from '../data/site';
+
+const crumbs = [{ name: 'About', href: '/about' }];
+const title = 'About Martin Hughes | MH Electrical';
+const description =
+  'Martin Hughes runs MH Electrical from Bromham, Bedford. NAPIT approved, 15 years in domestic work, NVQ Level 3 and 18th Edition, as he states.';
+---
+<Base title={title} description={description} schema={[breadcrumbSchema(crumbs)]}>
+  <section class="page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">About us</p>
+      <h1>Martin Hughes</h1>
+      <p class="lede">MH Electrical is his business. He is the electrician who comes to the house.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap split">
+      <div class="prose">
+        <p>The Google listing is in the name MH Electrical, at 24 Dovehouse Close, Bromham, Bedford, MK43 8PS. Customers on that listing talk about Martin. His flyer on the same profile uses the email {site.email}.</p>
+        <p>The description he wrote on Google says he has 15 years in domestic installations, testing and maintenance, and that he is a NAPIT approved contractor. NAPIT is a UK scheme for electricians. Approved contractors can certify certain work in homes.</p>
+        <p>His flyer says he is fully insured, and that he is based in Bedford and the surrounding area. It also says 24/7 callout. The hours on Google are 24 hours Monday to Saturday, and 9am to 5pm on Sunday. Both are on the same profile, so they are both shown here.</p>
+        <p>On his public trade profile he lists an NVQ Level 3, which is a qualification in electrical installation, and the 18th Edition, which is the current British wiring rules. He says he works within about 20 miles, across Bedfordshire, Milton Keynes, and the near part of Hertfordshire.</p>
+        <h2>How a job usually goes</h2>
+        <ul class="ticks">
+          <li>You call {site.phoneDisplay} or email, and say what has failed or what you want fitted.</li>
+          <li>He asks a few questions. If he needs to see it, he comes to the house.</li>
+          <li>You get a price before he starts. Customers mention fair prices, not a surprise at the end.</li>
+          <li>He does the work. Reviews mention that he turns up when he says he will, and that he explains what he is doing.</li>
+          <li>If the job needs a certificate, ask for it. Keep it with the house papers.</li>
+        </ul>
+        <p>There is no shop counter at Dovehouse Close. Call before you visit.</p>
+      </div>
+      <div>
+        <Image src={photos[16].src} alt={photos[16].alt} widths={[480, 800]} sizes="(min-width: 900px) 40vw, 100vw" />
+        <p class="note">Logo from the Google profile.</p>
+        <Image src={photos[17].src} alt={photos[17].alt} widths={[480, 800]} sizes="(min-width: 900px) 40vw, 100vw" />
+        <p class="note">Flyer from the same profile, with the phone number and email.</p>
+      </div>
+    </div>
+  </section>
+  <Cta />
+</Base>

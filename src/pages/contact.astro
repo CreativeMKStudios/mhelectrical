@@ -1,0 +1,92 @@
+---
+import Base from '../components/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { services } from '../data/services';
+import { breadcrumbSchema } from '../data/schema';
+import { addressLines, hours, site } from '../data/site';
+
+const crumbs = [{ name: 'Contact', href: '/contact' }];
+const title = 'Contact MH Electrical | Free quote';
+const description =
+  'Call Martin Hughes on 07903 862367 or email martin_hughes94mh@hotmail.com. MH Electrical, 24 Dovehouse Close, Bromham, Bedford, MK43 8PS.';
+const selected = Astro.url.searchParams.get('service') ?? '';
+---
+<Base title={title} description={description} schema={[breadcrumbSchema(crumbs)]}>
+  <section class="page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">Contact</p>
+      <h1>Get a price</h1>
+      <p class="lede">Call, email, or use the form. The form opens your email app. This site does not store the message.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap contact-grid">
+      <form
+        id="quote-form"
+        action={`mailto:${site.email}`}
+        method="post"
+        enctype="text/plain"
+        data-email={site.email}
+      >
+        <label>Name
+          <input name="name" autocomplete="name" required />
+        </label>
+        <label>Phone
+          <input name="phone" type="tel" autocomplete="tel" required />
+        </label>
+        <label>Email
+          <input name="email" type="email" autocomplete="email" />
+        </label>
+        <label>Town
+          <input name="town" autocomplete="address-level2" />
+        </label>
+        <label>What do you need?
+          <select name="service">
+            <option value="">Choose a job</option>
+            {services.map((service) => (
+              <option value={service.title} selected={selected === service.slug}>{service.title}</option>
+            ))}
+            <option value="Something else">Something else</option>
+          </select>
+        </label>
+        <label>What is going on?
+          <textarea name="message" required placeholder="For example: hall light dead, or a fuse board change in a 1930s house."></textarea>
+        </label>
+        <label class="hp">Company
+          <input name="company" tabindex="-1" autocomplete="off" />
+        </label>
+        <button class="btn" type="submit">Email this to Martin</button>
+        <p id="form-status" class="form-note" role="status"></p>
+        <noscript>
+          <p>Without JavaScript, your email app may still open. If it does not, write to {site.email}.</p>
+        </noscript>
+      </form>
+      <div>
+        <h2>MH Electrical</h2>
+        <p>
+          {addressLines.map((line) => (
+            <span>{line}<br /></span>
+          ))}
+        </p>
+        <p>
+          <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a><br />
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </p>
+        <p>Plus Code {site.plusCode}. <a href={site.mapsUrl}>Directions on Google Maps</a>.</p>
+        <h2>Hours on Google</h2>
+        <table class="hours">
+          <tbody>
+            {hours.map((row) => (
+              <tr>
+                <th scope="row">{row.day}</th>
+                <td>{row.label}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="note">His flyer says 24/7 callout. If it is Sunday evening, call anyway and he can say if he is out.</p>
+      </div>
+    </div>
+  </section>
+</Base>

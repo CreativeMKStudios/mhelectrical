@@ -1,0 +1,46 @@
+---
+import Base from '../../components/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
+import { areas, nearby } from '../../data/areas';
+import { breadcrumbSchema } from '../../data/schema';
+
+const crumbs = [{ name: 'Areas', href: '/areas' }];
+const title = 'Areas covered from Bromham | MH Electrical';
+const description =
+  'MH Electrical is based in Bromham and works about 20 miles, including Bedford, Kempston, Ampthill, Milton Keynes and nearby villages.';
+---
+<Base title={title} description={description} schema={[breadcrumbSchema(crumbs)]}>
+  <section class="page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">Areas</p>
+      <h1>Where Martin works</h1>
+      <p class="lede">He is based in Bromham, Bedford, MK43 8PS. He says he covers about 20 miles: Bedfordshire, Milton Keynes, and the Hertfordshire towns on that edge. If you are further out, call and ask. Do not assume.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap area-grid">
+      {areas.map((area) => (
+        <a class="area-card" href={`/areas/${area.slug}`}>
+          <span>{area.distance}</span>
+          <h2 style="font-size:2.2rem">{area.name}</h2>
+          <p>{area.card}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Also nearby</p>
+        <h2>Villages and towns in the same patch</h2>
+        <p>These places sit inside or near the 20 miles. They do not each have a page, because the work is the same. Give him the postcode.</p>
+      </div>
+      <ul class="chips">
+        {nearby.map((place) => <li>{place}</li>)}
+      </ul>
+    </div>
+  </section>
+  <Cta />
+</Base>
