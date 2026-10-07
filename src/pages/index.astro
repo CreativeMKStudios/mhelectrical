@@ -1,0 +1,158 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../components/Base.astro';
+import Cta from '../components/Cta.astro';
+import { faqs } from '../data/faqs';
+import { areas } from '../data/areas';
+import { photos } from '../data/photos';
+import { reviews } from '../data/reviews';
+import { faqSchema } from '../data/schema';
+import { services } from '../data/services';
+import { href, site } from '../data/site';
+
+const title = 'Electrician in Bedford | MH Electrical';
+const description =
+  'NAPIT approved electrician in Bromham, Bedford. Lights, fuse boards, faults, rewires and tests. 5.0 from 23 Google reviews. Call 07903 862367.';
+const hero = photos[0];
+---
+<Base title={title} description={description} image={hero.src} schema={[faqSchema(faqs)]}>
+  <section class="hero">
+    <div class="hero-media">
+      <Image
+        src={hero.src}
+        alt=""
+        widths={[640, 1024, 1600]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        quality={70}
+      />
+    </div>
+    <div class="hero-copy">
+      <p class="badge"><i></i> NAPIT approved · Bromham, Bedford</p>
+      <h1>Electrical work<br /><span>done properly</span></h1>
+      <p class="lede">
+        Martin Hughes runs MH Electrical from Bromham, on the edge of Bedford. He fits lights, changes fuse boards, finds faults and rewires homes. Google shows 5.0 from 23 reviews.
+      </p>
+      <div class="hero-actions">
+        <a class="btn" href={href('/contact')}>Get a free quote</a>
+        <a class="btn ghost" href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+      </div>
+      <div class="stat-row">
+        <p class="stat"><strong>5.0</strong><span>Google rating</span></p>
+        <p class="stat"><strong>23</strong><span>Google reviews</span></p>
+        <p class="stat"><strong>15</strong><span>Years' experience</span></p>
+        <p class="stat"><strong>20</strong><span>Mile working radius</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Our services</p>
+        <h2>The jobs Martin takes on</h2>
+        <p>These are the services on his Google flyer, plus the work customers wrote about. If your job is not listed, call and ask.</p>
+      </div>
+      <div class="cards">
+        {services.map((service) => (
+          <a class="card" href={href(`/services/${service.slug}`)}>
+            <h3>{service.title}</h3>
+            <p>{service.card}</p>
+            <span class="more">Read more</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap split">
+      <Image src={photos[14].src} alt={photos[14].alt} widths={[480, 800]} sizes="(min-width: 900px) 50vw, 100vw" />
+      <div>
+        <p class="eyebrow">About</p>
+        <h2>A local electrician, not a call centre</h2>
+        <p>Martin is the person who comes out. His Google profile says he has 15 years in domestic installations, testing and maintenance, and that he is a NAPIT approved contractor.</p>
+        <p>His flyer says he is fully insured and based in Bedford and the surrounding area. On his trade profile he also lists an NVQ Level 3 and the 18th Edition wiring rules, and he works within about 20 miles.</p>
+        <p><a class="btn" href={href('/about')}>About Martin</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Reviews</p>
+        <h2>What customers wrote on Google</h2>
+        <p>The profile shows 5.0 from 23 reviews. These five are the ones Google displayed in full on 6 October 2026. The words are theirs.</p>
+      </div>
+      <div class="review-grid">
+        {reviews.slice(0, 3).map((review) => (
+          <article class="review">
+            <p class="stars" aria-label="5 out of 5 stars">★★★★★</p>
+            <blockquote><p>{review.text}</p></blockquote>
+            <footer>{review.name}<br />{review.when}</footer>
+          </article>
+        ))}
+      </div>
+      <p style="margin-top:1.2rem"><a class="btn ghost" href={href('/reviews')}>All shown reviews</a></p>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Areas</p>
+        <h2>Bedford and about 20 miles</h2>
+        <p>He is based in Bromham. He lists Bedfordshire, Milton Keynes, and the near part of Hertfordshire.</p>
+      </div>
+      <div class="area-grid">
+        {areas.slice(0, 3).map((area) => (
+          <a class="area-card" href={href(`/areas/${area.slug}`)}>
+            <span>{area.distance}</span>
+            <h3>{area.name}</h3>
+            <p>{area.card}</p>
+          </a>
+        ))}
+      </div>
+      <p style="margin-top:1.2rem"><a class="btn ghost" href={href('/areas')}>All areas</a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Projects</p>
+        <h2>Photos from the Google profile</h2>
+        <p>Real photos from the MH Electrical listing, including the lighting job he posted on 16 June 2026.</p>
+      </div>
+      <div class="photo-grid">
+        {photos.filter((photo) => photo.group !== 'brand').slice(0, 3).map((photo) => (
+          <figure>
+            <Image src={photo.src} alt={photo.alt} widths={[400, 700]} sizes="(min-width: 800px) 33vw, 100vw" />
+            <figcaption>{photo.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <p style="margin-top:1.2rem"><a class="btn ghost" href={href('/projects')}>See the photos</a></p>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2>Before you call</h2>
+      </div>
+      <div class="cards">
+        {faqs.map((item) => (
+          <article class="card faq">
+            <h3>{item.q}</h3>
+            <p>{item.a}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+  <Cta />
+</Base>

@@ -1,0 +1,122 @@
+---
+import '../styles/global.css';
+import '@fontsource/barlow-condensed/latin-600.css';
+import '@fontsource/barlow-condensed/latin-700.css';
+import '@fontsource/source-sans-3/latin-400.css';
+import '@fontsource/source-sans-3/latin-600.css';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import JsonLd from './JsonLd.astro';
+import { businessSchema } from '../data/schema';
+import { pageUrl, publicOrigin, site } from '../data/site';
+import hero from '../assets/work/kitchen-downlights.jpg';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: { src: string; width: number; height: number };
+  schema?: Record<string, unknown>[];
+}
+
+const { title, description, image, schema = [] } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = pageUrl(path);
+const og = image ?? hero;
+const ogImage = og && typeof og === 'object' ? og : hero;
+const ogUrl = new URL(ogImage.src, publicOrigin).href;
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [businessSchema(canonical), ...schema],
+};
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#090909" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content={String(ogImage.width)} />
+    <meta property="og:image:height" content={String(ogImage.height)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+    <JsonLd data={graph} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      const toggle = document.querySelector('#nav-toggle');
+      const nav = document.querySelector('#site-nav');
+      const closeNav = () => {
+        nav?.classList.remove('is-open');
+        toggle?.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('nav-open');
+      };
+      toggle?.addEventListener('click', () => {
+        const open = nav?.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(Boolean(open)));
+        document.body.classList.toggle('nav-open', Boolean(open));
+      });
+      nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeNav));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeNav();
+      });
+
+      const form = document.querySelector<HTMLFormElement>('#quote-form');
+      const wanted = new URLSearchParams(window.location.search).get('service');
+      const serviceSelect = form?.querySelector<HTMLSelectElement>('select[name="service"]');
+      if (wanted && serviceSelect) {
+        const match = [...serviceSelect.options].find((option) => option.dataset.slug === wanted);
+        if (match) serviceSelect.value = match.value;
+      }
+      form?.addEventListener('submit', (event) => {
+        const data = new FormData(form);
+        if (String(data.get('company') || '').trim()) {
+          event.preventDefault();
+          return;
+        }
+        const name = String(data.get('name') || '').trim();
+        const phone = String(data.get('phone') || '').trim();
+        const email = String(data.get('email') || '').trim();
+        const town = String(data.get('town') || '').trim();
+        const service = String(data.get('service') || '').trim();
+        const message = String(data.get('message') || '').trim();
+        if (!name || !phone || !message) return;
+        event.preventDefault();
+        const body = [
+          `Name: ${name}`,
+          `Phone: ${phone}`,
+          `Email: ${email || 'not given'}`,
+          `Town: ${town || 'not given'}`,
+          `Job: ${service || 'not given'}`,
+          '',
+          message,
+        ].join('\n');
+        const mail = form.dataset.email || '';
+        window.location.href = `mailto:${mail}?subject=${encodeURIComponent('Quote request from the website')}&body=${encodeURIComponent(body)}`;
+        const status = document.querySelector('#form-status');
+        if (status) {
+          status.textContent = 'Your email app should open with this message. If it does not, send it yourself to the address above.';
+        }
+      });
+    </script>
+  </body>
+</html>

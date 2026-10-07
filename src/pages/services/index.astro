@@ -1,0 +1,47 @@
+---
+import Base from '../../components/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
+import { breadcrumbSchema } from '../../data/schema';
+import { otherWork, services } from '../../data/services';
+import { href } from '../../data/site';
+
+const crumbs = [{ name: 'Services', href: '/services' }];
+const title = 'Electrical services in Bedford | MH Electrical';
+const description =
+  'Lighting, fuse boards, rewires, fault finding, EICRs and emergency callouts from MH Electrical in Bromham, Bedford.';
+---
+<Base title={title} description={description} schema={[breadcrumbSchema(crumbs)]}>
+  <section class="page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">Services</p>
+      <h1>Home electrical work</h1>
+      <p class="lede">The main list is what Martin prints on his flyer. The extra list is work he offers on his public trade profile. Ask if you do not see your job.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap cards">
+      {services.map((service) => (
+        <a class="card" href={href(`/services/${service.slug}`)}>
+          <h2 style="font-size:2rem">{service.title}</h2>
+          <p>{service.card}</p>
+          <span class="more">Read more</span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Also listed</p>
+        <h2>Other work he takes</h2>
+        <p>These are on his trade profile. They do not each have their own page. Mention them when you call.</p>
+      </div>
+      <ul class="ticks">
+        {otherWork.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+  <Cta />
+</Base>

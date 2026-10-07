@@ -1,0 +1,69 @@
+---
+import { href, site } from '../data/site';
+import { services } from '../data/services';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+let path = Astro.url.pathname.replace(/\/$/, '') || '/';
+if (base && (path === base || path.startsWith(`${base}/`))) path = path.slice(base.length) || '/';
+const current = (target: string) => (path === target ? 'page' : undefined);
+---
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <p>NAPIT approved · Bromham, Bedford · Domestic installs, testing and maintenance</p>
+    <p>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+    </p>
+  </div>
+</div>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="logo" href={href('/')} aria-label="MH Electrical home">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path fill="#ffd000" d="M32 4 8 15v18c0 15.2 10 24.6 24 28 14-3.4 24-12.8 24-28V15L32 4z"/>
+        <path fill="#111" d="M23.5 20h9.2L27.2 33h8.4L27 50l2.4-13H21.2l2.3-17z"/>
+      </svg>
+      <span class="logo-text">
+        <strong>MH Electrical</strong>
+        <small>Your local electrician</small>
+      </span>
+    </a>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr">Menu</span>
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
+        <path d="M0 1h22M0 8h22M0 15h22" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <a href={href('/')} aria-current={current('/')}>Home</a>
+      <details>
+        <summary>Services</summary>
+        <ul>
+          <li><a href={href('/services')} aria-current={current('/services')}>All services</a></li>
+          {services.map((service) => (
+            <li>
+              <a href={href(`/services/${service.slug}`)} aria-current={current(`/services/${service.slug}`)}>{service.nav}</a>
+            </li>
+          ))}
+        </ul>
+      </details>
+      <a href={href('/about')} aria-current={current('/about')}>About</a>
+      <a href={href('/reviews')} aria-current={current('/reviews')}>Reviews</a>
+      <a href={href('/areas')} aria-current={current('/areas')}>Areas</a>
+      <a href={href('/projects')} aria-current={current('/projects')}>Projects</a>
+      <a href={href('/contact')} aria-current={current('/contact')}>Contact</a>
+    </nav>
+    <div class="header-cta">
+      <a class="header-phone" href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+      <a class="btn" href={href('/contact')}>Free quote</a>
+    </div>
+  </div>
+</header>
+<style>
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .nav-toggle { position: relative; }
+</style>

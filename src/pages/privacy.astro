@@ -1,0 +1,28 @@
+---
+import Base from '../components/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../data/schema';
+import { site } from '../data/site';
+
+const crumbs = [{ name: 'Privacy', href: '/privacy' }];
+const title = 'Privacy notice | MH Electrical';
+const description =
+  'How MH Electrical handles your name, phone number and email if you ask for a quote. The site stores no form data.';
+---
+<Base title={title} description={description} schema={[breadcrumbSchema(crumbs)]}>
+  <section class="page-hero">
+    <div class="wrap prose">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">Privacy</p>
+      <h1>Privacy notice</h1>
+      <p>This notice is for the MH Electrical website. Martin Hughes is the person responsible. Email {site.email} or call {site.phoneDisplay}.</p>
+      <h2>What this site collects</h2>
+      <p>The quote form does not send your details to a database. It opens an email to {site.email} on your own device. If you send that email, Martin receives whatever you wrote: usually your name, phone number, town and the job.</p>
+      <p>He uses those details to reply and to price or book the work. He does not sell them. He keeps emails for as long as the job, any certificate, or a tax record needs them, then deletes them.</p>
+      <h2>Cookies</h2>
+      <p>This site does not set analytics cookies and does not embed Google Maps. A link to Google Maps is just a link. If you open it, Google’s own notice applies.</p>
+      <h2>Your rights</h2>
+      <p>You can ask what is held about you, ask for a correction, or ask for it to be deleted where the law allows. Write to {site.email}. You can also complain to the Information Commissioner’s Office at ico.org.uk.</p>
+    </div>
+  </section>
+</Base>

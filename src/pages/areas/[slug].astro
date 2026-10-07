@@ -1,0 +1,48 @@
+---
+import Base from '../../components/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
+import { areas } from '../../data/areas';
+import { breadcrumbSchema } from '../../data/schema';
+import { services } from '../../data/services';
+import { href } from '../../data/site';
+
+export function getStaticPaths() {
+  return areas.map((area) => ({
+    params: { slug: area.slug },
+    props: { slug: area.slug },
+  }));
+}
+
+const { slug } = Astro.props;
+const area = areas.find((item) => item.slug === slug);
+if (!area) throw new Error('Missing area');
+const crumbs = [
+  { name: 'Areas', href: '/areas' },
+  { name: area.name, href: `/areas/${area.slug}` },
+];
+const title = `Electrician in ${area.name} | MH Electrical`;
+---
+<Base title={title} description={area.description} schema={[breadcrumbSchema(crumbs)]}>
+  <section class="page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">{area.distance}</p>
+      <h1>Electrician in {area.name}</h1>
+      <p class="lede">{area.card} Martin Hughes comes from Bromham. He does not have a second base here.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap prose">
+      {area.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      <h2>Jobs in {area.name}</h2>
+      <ul class="ticks">
+        {services.map((service) => (
+          <li><a href={href(`/services/${service.slug}`)}>{service.title}</a>. {service.card}</li>
+        ))}
+      </ul>
+      <p><a class="btn" href={href('/contact')}>Ask about a job in {area.name}</a></p>
+    </div>
+  </section>
+  <Cta />
+</Base>

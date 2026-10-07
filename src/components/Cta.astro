@@ -1,0 +1,16 @@
+---
+import { href, site } from '../data/site';
+---
+<section class="cta">
+  <div class="wrap cta-inner">
+    <div>
+      <p class="eyebrow">Free quote</p>
+      <h2>Tell Martin what you need</h2>
+      <p>Call, email, or send the form. You get a price before any work starts.</p>
+    </div>
+    <div class="hero-actions">
+      <a class="btn" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
+      <a class="btn ghost" href={href('/contact')}>Send a message</a>
+    </div>
+  </div>
+</section>
