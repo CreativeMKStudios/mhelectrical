@@ -1,5 +1,5 @@
 ---
-import { addressLines, hours, site } from '../data/site';
+import { addressLines, hours, href, site } from '../data/site';
 import { services } from '../data/services';
 ---
 <footer class="site-footer">
@@ -35,17 +35,17 @@ import { services } from '../data/services';
       <h2>Services</h2>
       <ul>
         {services.map((service) => (
-          <li><a href={`/services/${service.slug}`}>{service.title}</a></li>
+          <li><a href={href(`/services/${service.slug}`)}>{service.title}</a></li>
         ))}
       </ul>
     </div>
   </div>
   <p class="fine">
     Details checked against the Google listing on 6 October 2026. Google rating {site.rating}.0 from {site.reviewCount} reviews.
-    <a href="/privacy">Privacy</a>
+    <a href={href('/privacy')}>Privacy</a>
   </p>
 </footer>
 <div class="callbar">
   <a class="btn" href={`tel:${site.phoneTel}`}>Call</a>
-  <a class="btn ghost" href="/contact">Free quote</a>
+  <a class="btn ghost" href={href('/contact')}>Free quote</a>
 </div>

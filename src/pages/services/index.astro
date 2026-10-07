@@ -4,6 +4,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Cta from '../../components/Cta.astro';
 import { breadcrumbSchema } from '../../data/schema';
 import { otherWork, services } from '../../data/services';
+import { href } from '../../data/site';
 
 const crumbs = [{ name: 'Services', href: '/services' }];
 const title = 'Electrical services in Bedford | MH Electrical';
@@ -22,7 +23,7 @@ const description =
   <section class="section">
     <div class="wrap cards">
       {services.map((service) => (
-        <a class="card" href={`/services/${service.slug}`}>
+        <a class="card" href={href(`/services/${service.slug}`)}>
           <h2 style="font-size:2rem">{service.title}</h2>
           <p>{service.card}</p>
           <span class="more">Read more</span>

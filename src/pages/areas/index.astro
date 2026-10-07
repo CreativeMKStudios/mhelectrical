@@ -4,6 +4,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Cta from '../../components/Cta.astro';
 import { areas, nearby } from '../../data/areas';
 import { breadcrumbSchema } from '../../data/schema';
+import { href } from '../../data/site';
 
 const crumbs = [{ name: 'Areas', href: '/areas' }];
 const title = 'Areas covered from Bromham | MH Electrical';
@@ -22,7 +23,7 @@ const description =
   <section class="section">
     <div class="wrap area-grid">
       {areas.map((area) => (
-        <a class="area-card" href={`/areas/${area.slug}`}>
+        <a class="area-card" href={href(`/areas/${area.slug}`)}>
           <span>{area.distance}</span>
           <h2 style="font-size:2.2rem">{area.name}</h2>
           <p>{area.card}</p>

@@ -12,7 +12,7 @@ npm run dev
 npm run build
 ```
 
-The production site URL is set in `astro.config.mjs` as `https://mhelectrical.co.uk`. Change `site` there, and the sitemap line in `public/robots.txt`, before you point a real domain at the build.
+The live site is published with GitHub Pages at https://creativemkstudios.github.io/mhelectrical/. The address is set in `astro.config.mjs` (`site` and `base`) and in `public/robots.txt`. A push to `main` runs `.github/workflows/deploy.yml`.
 
 ## Pages
 

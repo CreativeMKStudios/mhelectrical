@@ -1,5 +1,5 @@
 ---
-import { site } from '../data/site';
+import { href, site } from '../data/site';
 ---
 <section class="cta">
   <div class="wrap cta-inner">
@@ -10,7 +10,7 @@ import { site } from '../data/site';
     </div>
     <div class="hero-actions">
       <a class="btn" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
-      <a class="btn ghost" href="/contact">Send a message</a>
+      <a class="btn ghost" href={href('/contact')}>Send a message</a>
     </div>
   </div>
 </section>

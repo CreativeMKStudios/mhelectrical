@@ -4,8 +4,9 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://mhelectrical.co.uk',
-  trailingSlash: 'never',
+  site: 'https://creativemkstudios.github.io',
+  base: '/mhelectrical',
+  trailingSlash: 'always',
   prefetch: true,
   integrations: [sitemap()],
 });

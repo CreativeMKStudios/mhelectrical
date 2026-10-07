@@ -6,7 +6,7 @@ import Cta from '../../components/Cta.astro';
 import { photos } from '../../data/photos';
 import { breadcrumbSchema } from '../../data/schema';
 import { services } from '../../data/services';
-import { site } from '../../data/site';
+import { href, site } from '../../data/site';
 
 export function getStaticPaths() {
   return services.map((service) => ({
@@ -42,7 +42,7 @@ const title = `${service.title} in Bedford | MH Electrical`;
         <ul class="ticks">
           {service.points.map((point) => <li>{point}</li>)}
         </ul>
-        <p><a class="btn" href={`/contact?service=${service.slug}`}>Ask for a price</a></p>
+        <p><a class="btn" href={href(`/contact?service=${service.slug}`)}>Ask for a price</a></p>
       </div>
       <div>
         {shots.map((photo) => (

@@ -9,7 +9,6 @@ const crumbs = [{ name: 'Contact', href: '/contact' }];
 const title = 'Contact MH Electrical | Free quote';
 const description =
   'Call Martin Hughes on 07903 862367 or email martin_hughes94mh@hotmail.com. MH Electrical, 24 Dovehouse Close, Bromham, Bedford, MK43 8PS.';
-const selected = Astro.url.searchParams.get('service') ?? '';
 ---
 <Base title={title} description={description} schema={[breadcrumbSchema(crumbs)]}>
   <section class="page-hero">
@@ -45,7 +44,7 @@ const selected = Astro.url.searchParams.get('service') ?? '';
           <select name="service">
             <option value="">Choose a job</option>
             {services.map((service) => (
-              <option value={service.title} selected={selected === service.slug}>{service.title}</option>
+              <option value={service.title} data-slug={service.slug}>{service.title}</option>
             ))}
             <option value="Something else">Something else</option>
           </select>

@@ -1,17 +1,17 @@
 import hero from '../assets/work/kitchen-downlights.jpg';
-import { hours, site } from './site';
+import { hours, pageUrl, publicOrigin, site } from './site';
 import { services } from './services';
 import { reviews } from './reviews';
 
 const day = (name: string) => `https://schema.org/${name}`;
 
-export function businessSchema(pageUrl: string) {
+export function businessSchema(canonical: string) {
   return {
     '@type': 'Electrician',
-    '@id': `${site.url}/#business`,
+    '@id': `${pageUrl('/')}#business`,
     name: site.name,
-    url: site.url,
-    image: new URL(hero.src, site.url).href,
+    url: pageUrl('/'),
+    image: new URL(hero.src, publicOrigin).href,
     telephone: site.phoneTel,
     email: site.email,
     address: {
@@ -58,14 +58,14 @@ export function businessSchema(pageUrl: string) {
         itemOffered: {
           '@type': 'Service',
           name: service.title,
-          url: `${site.url}/services/${service.slug}`,
+          url: pageUrl(`/services/${service.slug}`),
           areaServed: 'Bedford',
-          provider: { '@id': `${site.url}/#business` },
+          provider: { '@id': `${pageUrl('/')}#business` },
         },
       })),
     },
     sameAs: [site.mapsPlace, site.mapsUrl],
-    mainEntityOfPage: pageUrl,
+    mainEntityOfPage: canonical,
   };
 }
 
@@ -79,7 +79,7 @@ export function reviewSchema() {
       bestRating: 5,
     },
     reviewBody: review.text,
-    itemReviewed: { '@id': `${site.url}/#business` },
+    itemReviewed: { '@id': `${pageUrl('/')}#business` },
     publisher: { '@type': 'Organization', name: 'Google' },
   }));
 }
@@ -92,7 +92,7 @@ export function breadcrumbSchema(items: { name: string; href: string }[]) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: new URL(item.href, site.url).href,
+      item: pageUrl(item.href),
     })),
   };
 }

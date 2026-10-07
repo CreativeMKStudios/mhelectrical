@@ -8,7 +8,7 @@ import Header from './Header.astro';
 import Footer from './Footer.astro';
 import JsonLd from './JsonLd.astro';
 import { businessSchema } from '../data/schema';
-import { pageUrl, site } from '../data/site';
+import { pageUrl, publicOrigin, site } from '../data/site';
 import hero from '../assets/work/kitchen-downlights.jpg';
 
 interface Props {
@@ -22,7 +22,8 @@ const { title, description, image, schema = [] } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const canonical = pageUrl(path);
 const og = image ?? hero;
-const ogUrl = new URL(og.src, Astro.site ?? site.url).href;
+const ogImage = og && typeof og === 'object' ? og : hero;
+const ogUrl = new URL(ogImage.src, publicOrigin).href;
 const graph = {
   '@context': 'https://schema.org',
   '@graph': [businessSchema(canonical), ...schema],
@@ -38,7 +39,7 @@ const graph = {
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#090909" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_GB" />
     <meta property="og:site_name" content={site.name} />
@@ -46,8 +47,8 @@ const graph = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogUrl} />
-    <meta property="og:image:width" content={String(og.width)} />
-    <meta property="og:image:height" content={String(og.height)} />
+    <meta property="og:image:width" content={String(ogImage.width)} />
+    <meta property="og:image:height" content={String(ogImage.height)} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -80,6 +81,12 @@ const graph = {
       });
 
       const form = document.querySelector<HTMLFormElement>('#quote-form');
+      const wanted = new URLSearchParams(window.location.search).get('service');
+      const serviceSelect = form?.querySelector<HTMLSelectElement>('select[name="service"]');
+      if (wanted && serviceSelect) {
+        const match = [...serviceSelect.options].find((option) => option.dataset.slug === wanted);
+        if (match) serviceSelect.value = match.value;
+      }
       form?.addEventListener('submit', (event) => {
         const data = new FormData(form);
         if (String(data.get('company') || '').trim()) {

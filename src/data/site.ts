@@ -1,8 +1,10 @@
+export const publicOrigin = 'https://creativemkstudios.github.io';
+
 export const site = {
   name: 'MH Electrical',
   owner: 'Martin Hughes',
   short: 'NAPIT approved electrician based in Bromham, Bedford.',
-  url: 'https://mhelectrical.co.uk',
+  url: 'https://creativemkstudios.github.io/mhelectrical',
   phoneDisplay: '07903 862367',
   phoneTel: '+447903862367',
   email: 'martin_hughes94mh@hotmail.com',
@@ -47,7 +49,22 @@ export const addressLines = [
   site.postcode,
 ];
 
-export function pageUrl(pathname: string) {
-  const path = pathname === '/' ? '/' : pathname.replace(/\/$/, '');
-  return new URL(path, site.url).href;
+/** Root-relative path with the GitHub Pages project base, trailing slash on pages. */
+export function href(path = '/'): string {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  const [pathPart, query = ''] = path.split('?');
+  const [rawPath, hash = ''] = pathPart.split('#');
+  let route = rawPath || '/';
+  if (base && (route === base || route.startsWith(`${base}/`))) {
+    route = route.slice(base.length) || '/';
+  }
+  if (!route.startsWith('/')) route = `/${route}`;
+  const trimmed = route.replace(/\/+$/, '') || '/';
+  const isFile = trimmed !== '/' && /\.[a-z0-9]+$/i.test(trimmed);
+  const withBase = trimmed === '/' ? `${base}/` : isFile ? `${base}${trimmed}` : `${base}${trimmed}/`;
+  return `${withBase}${query ? `?${query}` : ''}${hash ? `#${hash}` : ''}`;
+}
+
+export function pageUrl(pathname = '/'): string {
+  return new URL(href(pathname), publicOrigin).href;
 }
